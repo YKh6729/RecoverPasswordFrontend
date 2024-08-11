@@ -1,0 +1,45 @@
+# Node modules directory
+node_modules/
+
+# Environment variable files
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+logs/
+
+# Dependency directories
+jspm_packages/
+
+# Build output
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# IDE and Editor specific files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# NPM package lock file (optional, but generally good practice)
+package-lock.json
+yarn.lock
+
+# Coverage directory used by testing tools
+coverage/
+
+# Other files to ignore
+*.pid
+*.seed
+*.pid.lock
