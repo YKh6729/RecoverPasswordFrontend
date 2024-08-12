@@ -1,5 +1,5 @@
 import React from 'react';
-import RecoverPassword from './recover-password'; // Adjust the path if needed
+import RecoverPassword from './recover-password/recover-password'; // Adjust the path if needed
 
 const RecoverPasswordPage: React.FC = () => {
     return (

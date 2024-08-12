@@ -11,7 +11,7 @@ import {
   authGetUserByEmail,
   authSignUp,
   authUpdateUser,
-  getUserIdByCode,
+  getUserIdFromRedis,
   createRecoverCode,
 } from "../../services/auth";
 // import {importUserToDatabase, readUserFromDatabase} from "../services/auth.service";
@@ -40,7 +40,6 @@ export const signup = async (
       password: hashedPassword,
       username,
     });
-    console.log({ user });
     res.status(201).json({
       message: "Signed up successfully",
       access_token: user.email,
@@ -122,7 +121,7 @@ export const sendLink = async (
   if (!candidate) {
     res.status(404).json({ message: "User not found!" });
   } else {
-    const result = await createRecoverCode({ code, user_id: candidate.id });
+    const result = await createRecoverCode(code, candidate.id);
     if (!result) {
       res.status(500).json({ message: "Internal server error!" });
     }
@@ -147,17 +146,15 @@ export const recoverPassword = async (
 ) => {
   const { newPassword, code } = req.body;
 
-  const data = await getUserIdByCode(code);
+  const user_id = await getUserIdFromRedis(code);
 
-  if (!data) {
+  if (!user_id) {
     res.status(404).json({ message: "User not found!" });
   } else {
-    const user_id = data.user_id;
     const hashedPassword = hashSync(newPassword, 10);
-
     const success = await authUpdateUser({
       password: hashedPassword,
-      id: user_id,
+      id: Number(user_id),
     });
     if (!success) {
       res.status(500).json({ message: "Could not update password!" });
