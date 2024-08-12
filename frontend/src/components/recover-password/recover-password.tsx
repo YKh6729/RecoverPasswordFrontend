@@ -1,9 +1,10 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './RecoverPassword.css';
 
 const RecoverPassword: React.FC = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [code, setCode] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -47,12 +48,19 @@ const RecoverPassword: React.FC = () => {
         }
     };
 
+    const handleBackToSignup = () => {
+        navigate('/signup');
+    };
+
     return (
         <div className="recover-password-container">
             <h1>Recover Password</h1>
             {code ? (
                 success ? (
-                    <p className="recover-password-success">Password was successfully updated!</p>
+                    <div>
+                        <p className="recover-password-success">Password was successfully updated!</p>
+                        <button onClick={handleBackToSignup}>Back to Signup</button>
+                    </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="recover-password-form">
                         <div>
@@ -77,7 +85,7 @@ const RecoverPassword: React.FC = () => {
                                 required
                             />
                         </div>
-                        {error && <p>{error}</p>}
+                        {error && <p className="recover-password-error">{error}</p>}
                         <button type="submit">Submit</button>
                     </form>
                 )
